@@ -24,6 +24,7 @@ public class LogExamples {
                 when().get("/regions/{id}").
                 then().
                 statusCode(200);
+        System.out.println("X");
 
     }
 

@@ -67,7 +67,8 @@ class JsonPathTests {
                 pathParam("id", 100).    // request with path param id=100
                 when().get("/employees/{id}").                         // when user makes get request
                 then().assertThat().statusCode(200).                            // assert that status code is 200
-                and().assertThat().body("last_name", is("King"));  // last_name id is equals to King
+                and().assertThat().body("last_name", is("King"))
+                .log().all(true);  // last_name id is equals to King
     }
 
     /**
@@ -100,9 +101,23 @@ class JsonPathTests {
     And last_name of the last employee from payload is "Mourgos"
     And salary of the last employee from payload is "5800"
          */
+    @Test
+    public void testFirstAndLast_1(){
+        Response response = given().contentType(ContentType.JSON).                       // accept type is json
+                when().get("/employees");
+        JsonPath json = response.jsonPath();
+        String last = json.getString("items.last_name[0]");
+        assertThat(last, is("King"));
+        int salary = json.getInt("items.salary[0]");
+        assertThat(salary, is(24000));
+        String last1 = json.getString("items.last_name[-1]");
+        assertThat(last1, is("Mourgos"));
+        int salary1 = json.getInt("items.salary[-1]");
+        assertThat(salary1, is(5800));
+    }
 
     @Test
-    public void testFirstAndLast() {
+    public void testFirstAndLast_2() {
         Response response = given().contentType(ContentType.JSON).                       // accept type is json
                 when().get("/employees");// when user makes get request
         response.then().statusCode(200);
@@ -152,7 +167,7 @@ class JsonPathTests {
                 when().get("/countries");// when user makes get request
         List<String> actualList = response.jsonPath().getList("items.country_name");
         System.out.println(actualList);
-        List<String> expected = Arrays.asList("Argentina" ,"Brazil", "Mexico", "United States of America", "Zambia");
+        List<String> expected = List.of("Argentina" ,"Brazil", "Mexico", "United States of America", "Zambia");
         System.out.println(expected);
 
 

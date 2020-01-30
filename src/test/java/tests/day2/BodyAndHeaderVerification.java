@@ -81,7 +81,6 @@ public class BodyAndHeaderVerification {
         String allCountries = jsonPath.getString("items.country_name");
         System.out.println(allCountries);
 
-
         // get all countries into list of strings
         List<String> countriesList = jsonPath.getList("items.country_name");
         System.out.println(countriesList.size());
@@ -90,7 +89,7 @@ public class BodyAndHeaderVerification {
         String countryNumberOne = jsonPath.getString("items.country_name[1]");
         System.out.println(countryNumberOne);
 
-        // get all coutry ids
+        // get all country ids
         List<Integer> ids = jsonPath.getList("items.region_id");
         System.out.println(ids);
 

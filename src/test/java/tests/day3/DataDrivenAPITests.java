@@ -21,12 +21,13 @@ public class DataDrivenAPITests {
 
     // ParameterizedTest  --> junit 5 annotation for data driven tests
     // in junit 5 data can come from multiple sources
-    // data can come csv files, methods, enums, @value source
+    // data can come csv files, methods, enums, @valueSource
     // the source is indicated next to the ParameterizedTest tag
     // @ValueSource  --> data is given with the test method
     @ParameterizedTest
     @ValueSource(ints = {1,2,3,4})
     public void validateRegionNameTest1(int id) {
+
         given().pathParam("id", id)
                 .when().get("/regions/{id}")
                 .prettyPeek()

@@ -38,7 +38,7 @@ public class JsonpathWithMapsTests {
         System.out.println(personInfo.get("salary"));
         System.out.println(personInfo.get("hire_date"));
 
-//        System.out.println(personInfo.get("links"));
+        System.out.println(personInfo.get("links"));
 
         Map<String, String> map = jsonPath.getMap("links[3]");
         System.out.println(map);
@@ -62,7 +62,7 @@ public class JsonpathWithMapsTests {
         expected.put("title", "London");
         expected.put("latt_long", "51.506321,-0.12714");
 
-        assertThat(map, equalTo(expected));
+        assertThat(map, is(equalTo(expected)));
     }
 
 

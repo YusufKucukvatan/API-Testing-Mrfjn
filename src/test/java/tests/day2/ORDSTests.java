@@ -15,6 +15,7 @@ public class ORDSTests {
     public void employeeTableTest() {
         Response response = given().pathParam("id", "100").
                 when().get("http://ec2-34-201-69-55.compute-1.amazonaws.com:1000/ords/hr/employees/{id}");
+
         response.then().statusCode(200).and().contentType("application/json");
         String responseStr = response.asString();
         assertThat(responseStr, containsString("100"));
@@ -27,6 +28,7 @@ public class ORDSTests {
     public void countriesTableTest() {
         Response response = given().pathParam("id", "AR").
                 when().get("http://ec2-34-201-69-55.compute-1.amazonaws.com:1000/ords/hr/countries/{id}");
+
         response.then().statusCode(200).and().contentType("application/json");
         assertThat(response.asString(), containsString("AR"));
         assertThat(response.asString(), containsString("Argentina"));

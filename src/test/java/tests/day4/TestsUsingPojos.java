@@ -33,7 +33,7 @@ public class TestsUsingPojos {
         Job itJob = response.as(Job.class);
         System.out.println(itJob);
 
-        // veirfy that job title is programmer
+        // verify that job title is programmer
         assertThat(itJob.getJob_title(), equalTo("Programmer"));
 
     }

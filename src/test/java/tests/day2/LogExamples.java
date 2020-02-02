@@ -15,6 +15,7 @@ public class LogExamples {
     public static void setUp(){
         RestAssured.baseURI = "http://ec2-34-201-69-55.compute-1.amazonaws.com:1000/ords/hr";
     }
+
     @Test
     public void test1() {
         // request logging
@@ -24,15 +25,13 @@ public class LogExamples {
                 when().get("/regions/{id}").
                 then().
                 statusCode(200);
-        System.out.println("X");
-
     }
 
     @Test
     public void test2() {
         // response logging
         // log().all(). --> prints everything in the response
-        // log().ifError(). --> prints if we get a error status code like 4xx or 5xx
+        // log().ifError(). --> prints if we get an error status code like 4xx or 5xx
         // ifStatusCodeIsEqualTo(401). --> prints if the status code matches the provided one
         // log().ifValidationFails --> prints if any assertion fails
 

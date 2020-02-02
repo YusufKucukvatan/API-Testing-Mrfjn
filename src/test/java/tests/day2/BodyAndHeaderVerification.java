@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.*;
 public class BodyAndHeaderVerification {
     @BeforeAll
     public static void setUp() {
-        RestAssured.baseURI = "http://ec2-34-201-69-55.compute-1.amazonaws.com:1000/ords/hr";
+        RestAssured.baseURI = "http://ec2-3-81-4-150.compute-1.amazonaws.com:1000/ords/hr";
     }
 
 

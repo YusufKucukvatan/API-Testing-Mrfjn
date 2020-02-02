@@ -44,7 +44,9 @@ class JsonPathTests {
     public void validateRegionNameTest1() {
         Response response = given().pathParam("id", 1)
                 .when().get("/regions/{id}");
+
         response.then().statusCode(200);
+
         JsonPath jsonPath = response.jsonPath();
         String id = jsonPath.getString("region_id");
         assertThat(id, equalTo("1"));
@@ -151,7 +153,7 @@ class JsonPathTests {
                 when().get("/employees");// when user makes get request
         response.then().statusCode(200);
         JsonPath jsonPath = response.jsonPath();
-        String string = jsonPath.getString("items.find {it.employee_id==102}.first_name");
+        String string = jsonPath.getString("items.find{it.employee_id==102}.first_name");
         assertThat(string, is("Lex"));
 
     }

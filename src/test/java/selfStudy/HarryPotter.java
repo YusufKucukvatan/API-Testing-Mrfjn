@@ -13,6 +13,7 @@ import pojos.Spartan;
 import utilities.ConfigurationReader;
 import utilities.SpartanApiUtils;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,11 +32,11 @@ public class HarryPotter {
     public void test1() {
         Response response = when().get("/sortingHat");
 
-        String responsStr = response.body().asString().replaceAll("\"", "");
+        String responseStr = response.body().asString().replaceAll("\"", "");
         List<String> list = List.of("Gryffindor", "Ravenclaw", "Slytherin", "Hufflepuff");
 
         assertEquals(200, response.statusCode());
-        assertTrue(list.contains(responsStr));
+        assertTrue(list.contains(responseStr));
     }
 
     @Test
@@ -84,12 +85,18 @@ public class HarryPotter {
                         .queryParam("key", ConfigurationReader.get("harryPotterApiKey"))
                         .when()
                         .get("/characters");
-        JsonPath json = response.jsonPath();
-        List<Map<String, ?>> characters = json.getList("");
-        System.out.println(characters.size());
-        assertEquals(200, response.statusCode());
-        assertEquals("application/json; charset=utf-8", response.getContentType());
-        assertEquals(195, characters.size());
+        response.then().assertThat()
+                .statusCode(200)
+                .contentType("application/json; charset=utf-8")
+                .body("", hasSize(195));
+
+
+//        JsonPath json = response.jsonPath();
+//        List<Map<String, ?>> characters = json.getList("");
+//        System.out.println(characters.size());
+//        assertEquals(200, response.statusCode());
+//        assertEquals("application/json; charset=utf-8", response.getContentType());
+//        assertEquals(195, characters.size());
     }
 
     @Test
@@ -147,6 +154,8 @@ public class HarryPotter {
     @Test
     @DisplayName("Verify name search")
     public void test7() {
+
+        String expected = "Harry Potter";
         given()
                 .accept("application/json")
                 .queryParam("key", ConfigurationReader.get("harryPotterApiKey"))
@@ -157,7 +166,7 @@ public class HarryPotter {
                 .assertThat()
                 .statusCode(200)
                 .contentType("application/json; charset=utf-8")
-                .body("name", contains("Harry Potter"));
+                .body("name", containsString(expected));
 
         given()
                 .accept("application/json")

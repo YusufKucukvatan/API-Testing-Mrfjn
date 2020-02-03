@@ -19,7 +19,7 @@ public class TestsUsingPojos {
 
     @BeforeAll
     public static void setup() {
-        baseURI = "http://ec2-34-201-69-55.compute-1.amazonaws.com:1000/ords/hr";
+        baseURI = "http://ec2-54-146-141-21.compute-1.amazonaws.com:1000/ords/hr";
     }
 
     @Test
@@ -40,8 +40,8 @@ public class TestsUsingPojos {
 
     @Test
     public void test() {
-//        Job job = new Job("01", "accountant", 100, 100000);
-//        System.outt.println(job);
+        Job job = new Job("01", "accountant", 100, 100000);
+        System.out.println(job);
 
     }
 
@@ -58,7 +58,7 @@ public class TestsUsingPojos {
         // convert the values to job object
         // put all the job objects into the new list
         // list contains Job type
-        // desrialzaiotn is happening here. from json we get jobs
+        // deserialization is happening here. from json we get jobs
         List<Job> jobs = response.jsonPath().getList("items", Job.class);
         System.out.println("Number of total jobs: " + jobs.size());
         System.out.println(jobs.get(1).getJob_title());
@@ -77,14 +77,13 @@ public class TestsUsingPojos {
         Employee emp = response.as(Employee.class);
         System.out.println(emp);
 
-        //verify taht first name is lex
+        //verify that first name is lex
         assertThat(emp.getFirstName(), equalTo("Lex"));
     }
 
     /*
-    Get the number of employees varify it is 25
+    Get the number of employees verify it is 25
      */
-
     @Test
     public void allTheEmployeesCount() {
         Response response = given().

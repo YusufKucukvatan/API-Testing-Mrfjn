@@ -173,14 +173,14 @@ public class HarryPotter {
     }
 
     @Test
-    @DisplayName("Verify name search")
+    @DisplayName("Verify house members")
     public void test8() {
         Response response1 =
                 given()
-                .accept("application/json")
-                .queryParam("key", ConfigurationReader.get("harryPotterApiKey"))
-                .when()
-                .get("/houses");
+                        .accept("application/json")
+                        .queryParam("key", ConfigurationReader.get("harryPotterApiKey"))
+                        .when()
+                        .get("/houses");
 
         response1.then()
                 .assertThat()
@@ -205,6 +205,24 @@ public class HarryPotter {
         System.out.println("memberIDs2 = " + memberIDs2);
 
         assertEquals(memberIDs1, memberIDs2.get(0));
+    }
 
+    @Test
+    @DisplayName("Verify house with most members")
+    public void test9() {
+        Response response =
+                given()
+                        .accept("application/json")
+                        .queryParam("key", ConfigurationReader.get("harryPotterApiKey"))
+                .when()
+                        .get("/houses");
+        JsonPath json = response.jsonPath();
+
+        List<String> Gryffindor = json.getList("find{it.name==\"Gryffindor\"}.members");
+        List<String> Ravenclaw = json.getList("find{it.name==\"Ravenclaw\"}.members");
+        List<String> Slytherin = json.getList("find{it.name==\"Slytherin\"}.members");
+        List<String> Hufflepuff = json.getList("find{it.name==\"Hufflepuff\"}.members");
+
+        assertTrue(Gryffindor.size()>Ravenclaw.size()&&Gryffindor.size()>Slytherin.size()&&Gryffindor.size()>Hufflepuff.size());
     }
 }

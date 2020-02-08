@@ -32,8 +32,9 @@ public class HarryPotter {
     public void test1() {
         Response response = when().get("/sortingHat");
 
-        String responseStr = response.body().asString().replaceAll("\"", "");
-        List<String> list = List.of("Gryffindor", "Ravenclaw", "Slytherin", "Hufflepuff");
+        String responseStr = response.body().asString();
+        System.out.println("responseStr = " + responseStr);
+        List<String> list = List.of("\"Gryffindor\"", "\"Ravenclaw\"", "\"Slytherin\"", "\"Hufflepuff\"");
 
         assertEquals(200, response.statusCode());
         assertTrue(list.contains(responseStr));
@@ -42,7 +43,7 @@ public class HarryPotter {
     @Test
     @DisplayName("Verify bad key")
     public void test2() {
-        String bodyStr = "{\"error\":\"API Key Not Found\"}";
+        String expected = "{\"error\":\"API Key Not Found\"}";
         given()
                 .accept("application/json")
                 .queryParam("key", "invalid")
@@ -50,12 +51,10 @@ public class HarryPotter {
                 .get("/characters")
                 .then()
                 .assertThat()
-                .statusCode(401)
-                .contentType("application/json; charset=utf-8")
-                .statusLine(containsString("Unauthorized"))
-                .body(containsString(bodyStr));
-
-
+                    .statusCode(401)
+                    .contentType("application/json; charset=utf-8")
+                    .statusLine(containsString("Unauthorized"))
+                    .body(containsString(expected));
     }
 
     @Test
@@ -108,11 +107,13 @@ public class HarryPotter {
                         .queryParam("key", ConfigurationReader.get("harryPotterApiKey"))
                         .when()
                         .get("/characters");
+
         JsonPath json = response.jsonPath();
         List<String> IDs = json.getList("_id");
         List<Boolean> dumble = json.getList("dumbledoresArmy");
         List<String> house = json.getList("house");
         System.out.println("house = " + house);
+
         response.then()
                 .assertThat()
                 .statusCode(200)
@@ -132,8 +133,8 @@ public class HarryPotter {
                         .when()
                         .get("/characters");
         JsonPath json = response1.jsonPath();
-        String firstName = json.getString("name[0]");
-        Map<String, ?> character1 = json.getMap("[0]");
+        Map<String, ?> character1 = json.getMap("[18]");
+        String firstName= (String) character1.get("name");
         System.out.println("character1 = " + character1);
 
         Response response2 =
@@ -166,7 +167,7 @@ public class HarryPotter {
                 .assertThat()
                 .statusCode(200)
                 .contentType("application/json; charset=utf-8")
-                .body("name", containsString(expected));
+                .body("name[0]", containsString(expected));
 
         given()
                 .accept("application/json")
@@ -178,7 +179,8 @@ public class HarryPotter {
                 .assertThat()
                 .statusCode(200)
                 .contentType("application/json; charset=utf-8")
-                .body(is(empty()));
+                .body("",is(empty()));
+
     }
 
     @Test

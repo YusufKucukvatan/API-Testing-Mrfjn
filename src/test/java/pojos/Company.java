@@ -15,6 +15,10 @@ public class Company {
         this.address = address;
     }
 
+
+    public Company() {
+    }
+
     @Override
     public String toString() {
         return "Company{" +
